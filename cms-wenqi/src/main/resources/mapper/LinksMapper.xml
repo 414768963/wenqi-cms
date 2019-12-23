@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wenqi.cms.dao.LinksDao">
+
+	<select id="select" resultType="Link">
+		select * from cms_links
+		<where>
+			<if test="link.text!=null and link.text!=''">
+				text like '%${link.text}%'
+			</if>
+		</where>
+	</select>
+
+	<select id="selectById" resultType="Link">
+		select * from cms_links where id=#{id}
+	</select>
+	
+	<update id="updateLinks">
+		update cms_links set text=#{link.text},url=#{link.url},created=#{link.created} where id=#{link.id}
+	</update>
+	
+	<insert id="addLinks">
+		insert into cms_links values (null,#{link.text},#{link.url},#{link.created})
+	</insert>
+	
+	<delete id="del" >
+		delete from cms_links where id in
+		<foreach collection="ids" item="ids" open="(" close=")" separator=",">
+			#{ids}
+		</foreach>
+	</delete>
+</mapper>
