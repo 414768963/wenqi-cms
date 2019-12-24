@@ -72,7 +72,8 @@ public class UserController {
 		if(string2md5.equals(userInfo.getPassword())) {
 			session.setAttribute(CmsConstant.UserSessionKey, userInfo);
 			if("1".equals(user.getIsMima())) {
-				int maxAge = 1000*60*60*24;
+				/** 设置cookie过期时间为一周 **/
+				int maxAge = 60*60*24*7;
 				CookieUtil.addCookie(response, "username", user.getUsername(), null, null, maxAge);
 			}
 			return JsonResult.sucess();
