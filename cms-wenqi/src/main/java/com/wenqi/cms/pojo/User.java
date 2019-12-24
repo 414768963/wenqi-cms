@@ -39,6 +39,8 @@ public class User implements Serializable{
     private Date updateTime;
     
     private String headimg;
+    
+    private String isMima;
    
     public boolean isAdmin() {
     	return "1".equals(getRole());
@@ -56,6 +58,14 @@ public class User implements Serializable{
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", nickname=" + nickname
 				+ ", birthday=" + birthday + ", gender=" + gender + ", locked=" + locked + ", score=" + score
 				+ ", role=" + role + ", url=" + url + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+	}
+    
+	public String getIsMima() {
+		return isMima;
+	}
+
+	public void setIsMiam(String isMima) {
+		this.isMima = isMima;
 	}
 
 	public Integer getId() {

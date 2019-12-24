@@ -49,6 +49,7 @@ public class AdminUserController {
 		String string2md5 = CmsMd5Util.string2MD5(user.getPassword());
 		if(string2md5.equals(userInfo.getPassword())) {
 			session.setAttribute(CmsConstant.UserAdminSessionKey, userInfo);
+			
 			return JsonResult.sucess();
 		}
 		return JsonResult.fail(500, "未知错误");

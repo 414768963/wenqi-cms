@@ -115,4 +115,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDao.selectNewList(num);
 	}
 
+	@Override
+	public int addTousuCnt(Integer id) {
+		
+		return articleDao.addTousuCnt(id);
+	}
+
 }

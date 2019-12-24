@@ -137,4 +137,13 @@ public interface ArticleDao {
 	 * @throws
 	 */
 	List<Article> selectNewList(@Param("num") int num);
+	/**  
+	* @param id 
+	 * @Title: addTousuCnt  
+	* @Description: TODO(这里用一句话描述这个方法的作用)  
+	* @param @return    设定文件  
+	* @return int    返回类型  
+	*/
+	
+	int addTousuCnt(@Param("id")Integer id);
 }

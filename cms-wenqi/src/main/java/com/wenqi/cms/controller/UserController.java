@@ -17,6 +17,7 @@ import com.bawei.wenqi.utils.StringUtil;
 import com.github.pagehelper.PageInfo;
 import com.wenqi.cms.common.CmsConstant;
 import com.wenqi.cms.common.CmsMd5Util;
+import com.wenqi.cms.common.CookieUtil;
 import com.wenqi.cms.common.JsonResult;
 import com.wenqi.cms.pojo.Article;
 import com.wenqi.cms.pojo.Channel;
@@ -55,7 +56,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="login",method=RequestMethod.POST)
 	@ResponseBody
-	public Object login(User user,HttpSession session) {
+	public Object login(User user,HttpSession session,HttpServletResponse response) {
 		//判断用户名和密码
 		if(StringUtil.isBlank(user.getUsername()) || StringUtil.isBlank(user.getPassword())) {
 			return JsonResult.fail(1000, "用户名和密码不能为空");
@@ -70,6 +71,10 @@ public class UserController {
 		String string2md5 = CmsMd5Util.string2MD5(user.getPassword());
 		if(string2md5.equals(userInfo.getPassword())) {
 			session.setAttribute(CmsConstant.UserSessionKey, userInfo);
+			if("1".equals(user.getIsMima())) {
+				int maxAge = 1000*60*60*24;
+				CookieUtil.addCookie(response, "username", user.getUsername(), null, null, maxAge);
+			}
 			return JsonResult.sucess();
 		}
 		return JsonResult.fail(1000, "用户名或密码错误");
@@ -86,6 +91,8 @@ public class UserController {
 	@RequestMapping("logout")
 	public Object logout(HttpServletResponse response,HttpSession session) {
 		session.removeAttribute(CmsConstant.UserSessionKey);
+		CookieUtil.addCookie(response, "username", null, null, null, 0);
+		
 		return "redirect:/";
 	}
 	
@@ -187,6 +194,14 @@ public class UserController {
 		return "user/article";
 	}
 	
+	@RequestMapping("isLogin")
+	public @ResponseBody JsonResult isLogin(HttpSession session) {
+		Object attribute = session.getAttribute(CmsConstant.UserSessionKey);
+		if(attribute!=null) {
+			return JsonResult.sucess();
+		}
+		return JsonResult.fail(CmsConstant.unLoginErrorCode, "未登录");
+	}
 	
 	
 	

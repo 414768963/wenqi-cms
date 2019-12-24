@@ -46,6 +46,8 @@ public class Article implements Serializable{
     
     private String statusIds;
     
+    private Integer tousuCnt;
+    
     
     @Override
 	public String toString() {
@@ -57,6 +59,18 @@ public class Article implements Serializable{
 
     
     
+	public Integer getTousuCnt() {
+		return tousuCnt;
+	}
+
+
+
+	public void setTousuCnt(Integer tousuCnt) {
+		this.tousuCnt = tousuCnt;
+	}
+
+
+
 	public String getStatusIds() {
 		return statusIds;
 	}

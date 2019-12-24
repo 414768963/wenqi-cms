@@ -129,4 +129,13 @@ public interface ArticleService {
 	 * @throws
 	 */
 	List<Article> getNewList(int num);
+	/**  
+	* @param id 
+	 * @Title: addTousuCnt  
+	* @Description: 增加投诉数量
+	* @param @return    设定文件  
+	* @return int    返回类型  
+	*/
+	
+	int addTousuCnt(Integer id);
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wenqi.cms.dao.TousuDao">
+	<select id="select" resultType="Tousu">
+		select c.*,u.nickname,u.headimg 
+		from cms_tousu c,cms_user u where c.userId=u.id
+		<if test="tousu.articleid!=null">
+			and c.articleId=#{tousu.articleid}
+		</if>
+		order by created desc
+	</select>
+	
+	<select id="selectById" resultType="Tousu">
+		select * from cms_tousu where id=#{id}
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(1) from cms_tousu
+	</select>
+	
+	<insert id="add">
+		insert into cms_tousu 
+    values (null,#{tousu.articleId}, #{tousu.userId}, #{tousu.content}, 
+      #{tousu.created})
+	</insert>
+	
+	<update id="update">
+		update cms_tousu
+	    set articleId = #{tousu.articleid},
+	      userId = #{tousu.userid},
+	      content = #{tousu.content},
+	      created = #{tousu.created}
+	    where id = #{tousu.id}
+	</update>
+	
+	<delete id="deleteById">
+		delete from cms_tousu where id=#{id}
+	</delete>
+	
+	<delete id="deleteByIds">
+		delete from cms_tousu where id in(${ids})
+	</delete>
+</mapper>
