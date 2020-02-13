@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.wenqi.cms.common.CmsMd5Util;
 import com.wenqi.cms.dao.UserDao;
 import com.wenqi.cms.pojo.User;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public PageInfo<User> getPageInfo(User user, int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
+		PageMethod.startPage(pageNum, pageSize);
 		List<User> userList = userDao.select(user);
 		return new PageInfo<>(userList);
 	}

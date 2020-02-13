@@ -44,7 +44,9 @@
 				<div style="margin-top: 10px;margin-bottom: 10px;font-weight: bold;color: #777;">
 					<span>${user.nickname }</span> 
 					<span><fmt:formatDate value="${article.created}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
-					<span style="font-size: 24px;color: red;" onclick="tousuShow()">投诉</span>
+					<div style="margin-top: 10px;">
+						    <button type="button" class="btn btn-primary" onclick="tousuShow()">投诉</button>
+					</div>
 				</div>
 				<div style="font-size: 24">
 					${article.content }
@@ -86,22 +88,49 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">投诉框</h5>
+        <h5 class="modal-title">投诉内容</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-	  <div class="form-group">
-	    <label for="exampleFormControlTextarea1">投诉内容</label>
-	    <textarea class="form-control" id="tousuContent" name="tousuContent" rows="3"></textarea>
-	  </div>
+		<form id="complainModal">
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="complaintype" id="complaintype" value="A">
+			  <label class="form-check-label" for="inlineRadio1">涉及黄色</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="complaintype" id="complaintype" value="B">
+			  <label class="form-check-label" for="inlineRadio2">涉及暴力</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="complaintype" id="complaintype" value="C">
+			  <label class="form-check-label" for="inlineRadio3">涉及违宗教政策</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="complaintype" id="complaintype" value="D">
+			  <label class="form-check-label" for="inlineRadio4">涉及国家安全</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="complaintype" id="complaintype" value="F">
+			  <label class="form-check-label" for="inlineRadio5">抄袭内容</label>
+			</div>
+			<div class="form-check form-check-inline">
+			  <input class="form-check-input" type="radio" name="complaintype" id="complaintype" value="G">
+			  <label class="form-check-label" for="inlineRadio6">其它</label>
+			</div>
+			  <div class="form-group">
+			    URL地址:<input type="text" class="form-control" id="urlip" name="urlip">
+			  </div>
+		
+		</form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="tousu();">确认投诉</button>
+        <button type="button" class="btn btn-primary" onclick="tousu();">确定</button>
       </div>
     </div>
   </div>
 </div>
+
 	<script type="text/javascript" src="/public/js/jquery.min.1.12.4.js"></script>
 	<script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
@@ -125,29 +154,35 @@
 				}
 			})
 		}
-		
 		function tousuShow() {
 			$.post("/user/isLogin",function(res){
 				if(res.result){
-					$('#tousuModal').modal('show')
+					$('#tousuModal').modal('show');
 				}else{
-					alert("未登录，请登录后在投诉");
+					alert("您还未登录");
 					location.href="/user/login";
 				}
 			})
 		}
-		
 		function tousu() {
-			var content=$("#tousuContent").val();
-			$.post("/tousu/add",{articleId:articleId,content:content},function(res){
+			var data = $("form").serialize();
+			console.log(data);
+			$.post("/admin/complain/add?article_id="+articleId,data,function(res){
 				if(res.result){
-					alert("投诉成功！");
+					alert("投诉成功!");
 					$('#tousuModal').modal('hide');
-				}else{
-					alert("投诉失败!");
+				}
+				if(res.errorCode==1001){
+					alert("不能投诉自己!");
+					$('#tousuModal').modal('hide');
+				}
+				if(res.errorCode==1002){
+					alert("URL路径不正确");
+					$('#tousuModal').modal('hide');
 				}
 			})
 		}
+		
 	</script>
 </body>
 </html>

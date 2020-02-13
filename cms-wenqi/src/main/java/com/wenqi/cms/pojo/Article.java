@@ -3,15 +3,20 @@ package com.wenqi.cms.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+@Document(indexName = "cms_article",type = "atricle")
 public class Article implements Serializable{
 	
     /**   
 	 * @Fields serialVersionUID : TODO(这个变量表示什么)   
 	 */  
 	private static final long serialVersionUID = 1L;
-
+	@Id
 	private Integer id;
-
+	@Field(index = true,store = true,analyzer = "ik_smart",searchAnalyzer = "ik_smart",type = FieldType.text)
     private String title;
 
     private String picture;

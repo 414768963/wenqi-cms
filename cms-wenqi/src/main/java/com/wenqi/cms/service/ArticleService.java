@@ -138,4 +138,12 @@ public interface ArticleService {
 	*/
 	
 	int addTousuCnt(Integer id);
+	/**  
+	* @Title: addComplain  
+	* @Description: 添加投诉次数
+	* @param @param user_id    设定文件  
+	* @return void    返回类型  
+	*/
+	
+	int addComplain(Integer id);
 }

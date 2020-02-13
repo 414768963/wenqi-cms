@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
+import com.wenqi.cms.dao.ArticleDao;
+import com.wenqi.cms.dao.ArticleRepostory;
 import com.wenqi.cms.pojo.Article;
 import com.wenqi.cms.pojo.Channel;
 import com.wenqi.cms.pojo.User;
@@ -23,7 +25,13 @@ public class AdminController {
 	private UserService userService;
 	
 	@Autowired
+	private ArticleDao articleDao;
+	
+	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private ArticleRepostory articleRepostory;
 	
 	/**
 	 * @Title: login   
@@ -135,6 +143,11 @@ public class AdminController {
 	@RequestMapping("/article/update/status")
 	@ResponseBody
 	public boolean updateArticleStatus(Article article) {
+		
+		//审核文章的方法
+		Integer id = article.getId();
+		Article article2 = articleDao.selectById(id);
+		articleRepostory.save(article2);
 		return articleService.updateStatus(article.getId(), article.getStatus());
 	}
 	/**

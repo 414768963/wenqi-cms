@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.wenqi.cms.dao.LinksDao;
 import com.wenqi.cms.pojo.Link;
 
@@ -46,7 +47,7 @@ public class LinksService {
 	
 	public PageInfo<Link> getPageInfo(Link link, Integer pageNum, Integer pageSize) {
 		
-		PageHelper.startPage(pageNum, pageSize);
+		PageMethod.startPage(pageNum, pageSize);
 		
 		List<Link> list = linksDao.select(link);
 		

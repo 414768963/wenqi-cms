@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wenqi.cms.dao.ComplainDao">
+	
+	<insert id="add">
+		insert into cms_complain values(null,#{complain.article_id},#{complain.user_id},#{complain.complaintype},#{complain.urlip},#{complain.creatTime})
+	</insert>
+	
+	<select id="complainList" resultType="Complain">
+		select complain.*,article.title,article.content,article.complainnum
+			from cms_complain complain 
+			left join cms_article article
+			on complain.article_id=article.id
+		<where>
+			<if test="complain.complaintype!=null and complain.complaintype!=''">complain.complaintype=#{complain.complaintype}</if>
+			
+			<if test="complain.complainnum1!=null and complain.complainnum2!=null">
+				article.complainnum between  #{complain.complainnum1} and #{complain.complainnum2}
+			</if>
+		</where>
+		ORDER BY creatTime DESC
+	</select>
+	
+	<select id="xiangQing" resultType="Complain">
+		select complain.*,article.title,article.user_id,article.complainnum,users.username
+			from cms_complain complain 
+			left join cms_article article
+			on complain.article_id=article.id
+			LEFT JOIN cms_user users ON article.user_id=users.id 
+			where complain.id=#{id}
+			ORDER BY creatTime DESC
+	</select>
+	
+	<select id="complainLists" resultType="Complain">
+		select complain.*,article.title,article.content,article.complainnum
+			from cms_complain complain 
+			left join cms_article article
+			on complain.article_id=article.id
+			ORDER BY creatTime DESC
+	</select>
+</mapper>

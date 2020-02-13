@@ -10,6 +10,7 @@ public class SpringBeanUtils implements ApplicationContextAware{
 	
 	private static ApplicationContext applicationContext = null;
 	
+	@Override
 	@Autowired
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		if(SpringBeanUtils.applicationContext == null) {

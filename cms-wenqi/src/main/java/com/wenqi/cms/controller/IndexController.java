@@ -12,9 +12,11 @@ import com.github.pagehelper.PageInfo;
 import com.wenqi.cms.pojo.Article;
 import com.wenqi.cms.pojo.Category;
 import com.wenqi.cms.pojo.Channel;
+import com.wenqi.cms.pojo.Complain;
 import com.wenqi.cms.pojo.Slide;
 import com.wenqi.cms.pojo.User;
 import com.wenqi.cms.service.ArticleService;
+import com.wenqi.cms.service.ComplainService;
 import com.wenqi.cms.service.SlideService;
 import com.wenqi.cms.service.UserService;
 
@@ -26,6 +28,8 @@ public class IndexController {
 	private UserService userService;
 	@Autowired
 	private SlideService slideService;
+	@Autowired
+	private ComplainService complainService;
 
 	
 	@RequestMapping(value="/")

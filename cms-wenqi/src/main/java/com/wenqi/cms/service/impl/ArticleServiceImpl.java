@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.wenqi.cms.dao.ArticleDao;
 import com.wenqi.cms.dao.CategoryDao;
 import com.wenqi.cms.dao.ChannelDao;
@@ -27,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	@Override
 	public PageInfo<Article> getPageInfo(Article article, int pageNum, int pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
+		PageMethod.startPage(pageNum, pageSize);
 		List<Article> articleList = articleDao.select(article);
 		return new PageInfo<>(articleList);
 	}
@@ -97,7 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public PageInfo<Article> getHotList(int pageNum) {
-		PageHelper.startPage(pageNum, 6);
+		PageMethod.startPage(pageNum, 6);
 		List<Article> articleList = articleDao.selectByHot();
 		
 		return new PageInfo<>(articleList);
@@ -105,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public PageInfo<Article> getListByChannelIdAndCateId(Integer channelId, Integer cateId, Integer pageNum) {
-		PageHelper.startPage(pageNum, 6);
+		PageMethod.startPage(pageNum, 6);
 		List<Article> articleList = articleDao.selectListByChannelIdAndCateId(channelId,cateId);
 		 return new PageInfo<>(articleList);
 	}
@@ -119,6 +120,12 @@ public class ArticleServiceImpl implements ArticleService {
 	public int addTousuCnt(Integer id) {
 		
 		return articleDao.addTousuCnt(id);
+	}
+
+	@Override
+	public int addComplain(Integer id) {
+		
+		return articleDao.addComplain(id);
 	}
 
 }

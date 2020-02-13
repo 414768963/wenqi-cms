@@ -25,6 +25,8 @@
 	        <option value="0" <c:if test="${article.status==0 }">selected="selected"</c:if>>未审核</option>
 	        <option value="1" <c:if test="${article.status==1 }">selected="selected"</c:if>>审核通过</option>
 	        <option value="-1" <c:if test="${article.status==-1 }">selected="selected"</c:if>>审核未通过</option>
+	        
+	        
 	      </select>
 	  </div>
 	  <input type="hidden" name="pageNum" value="${pageInfo.pageNum }">
@@ -40,7 +42,7 @@
       <th scope="col">所属频道</th>
       <th scope="col">所属分类</th>
       <th scope="col">是否热点</th>
-      <th scope="col">投诉次数</th>
+      
       <th scope="col">审核状态</th>
       <th scope="col">发布时间</th>
       <th scope="col">操作</th>
@@ -56,15 +58,13 @@
 	      <td>${item.categoryName }</td>
 	      <td>${item.hot>0?"是":"否"}</td>
 	      <td>${item.tousuCnt}</td>
-	      <td>${item.status==1?"已审核":item.status==0?"未审核":item.status==3?"已禁看":"审核未通过"}</td>
+	      <td>${item.status==1?"已审核":item.status==0?"未审核":"审核未通过"}</td>
 	      <td><fmt:formatDate value="${item.created }" pattern="yyyy-MM-dd HH:mm"/></td>
 	      <td>
 	      	<button type="button" class="btn btn-primary" onclick="check('${item.id}')">审核</button>
 	      	<button type="button" class="btn btn-primary" onclick="addHot('${item.id}')">加热</button>
 	      	<button type="button" class="btn btn-primary" onclick="view('${item.id}')">查看</button>
-	      	<c:if test="${item.tousuCnt>=50}">
-	      		<button type="button" class="btn btn-primary" onclick="stopShow('${item.id}')">禁看</button>
-	      	</c:if>
+	      	
 	      </td>
 	    </tr>
    	</c:forEach>
@@ -145,14 +145,7 @@
 		});
 	}
 	
-	function stopShow(id) {
-		$.post("/admin/article/update/status",{id:id,status:3},function(res){
-			$('#checkModal').modal('hide');
-			$('.alert').html("禁看成功!");
-			$('.alert').show();
-			query();
-		});
-	}
+	
 	
 	function view(id){
 		window.open("/article/"+id+".html");

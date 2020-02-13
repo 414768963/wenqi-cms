@@ -7,12 +7,16 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bawei.wenqi.utils.HLUtils;
+import com.github.pagehelper.PageInfo;
 import com.wenqi.cms.common.CmsConstant;
 import com.wenqi.cms.common.JsonResult;
 import com.wenqi.cms.pojo.Article;
@@ -26,7 +30,25 @@ import com.wenqi.cms.service.ArticleService;
 public class ArticleController {
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private ElasticsearchTemplate elasticsearchTemplate;
 	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@RequestMapping("search")
+	public String search(String keyword,Model model,@RequestParam(defaultValue = "1")Integer pageNum,
+			@RequestParam(defaultValue = "5")Integer pageSize) {
+			/** 频道 */
+			List<Channel> channelList = articleService.getChannelList();
+			model.addAttribute("channelList", channelList);
+			/** 最新文章 **/
+			List<Article> newArticleList = articleService.getNewList(6);
+			model.addAttribute("newArticleList", newArticleList);
+			PageInfo<Article> pageInfo = (PageInfo<Article>) HLUtils.findByHighLight(elasticsearchTemplate, Article.class, pageNum, pageSize, new String[] {"title"}, "id", keyword);
+			model.addAttribute("pageInfo", pageInfo);
+			model.addAttribute("keyword", keyword);
+			
+		return "index";
+	}
 	
 	/**
 	 * @Title: add   

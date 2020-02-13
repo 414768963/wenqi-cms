@@ -290,6 +290,7 @@ public class FileController {
 
 @SuppressWarnings("rawtypes")
 class NameComparator implements Comparator {
+	@Override
 	public int compare(Object a, Object b) {
 		Hashtable hashA = (Hashtable) a;
 		Hashtable hashB = (Hashtable) b;
@@ -308,6 +309,7 @@ class SizeComparator implements Comparator {
 	public SizeComparator() {
 	}
 
+	@Override
 	public int compare(Object a, Object b) {
 		Hashtable hashA = (Hashtable) a;
 		Hashtable hashB = (Hashtable) b;
@@ -329,6 +331,7 @@ class SizeComparator implements Comparator {
 
 @SuppressWarnings("rawtypes")
 class TypeComparator implements Comparator {
+	@Override
 	public int compare(Object a, Object b) {
 		Hashtable hashA = (Hashtable) a;
 		Hashtable hashB = (Hashtable) b;

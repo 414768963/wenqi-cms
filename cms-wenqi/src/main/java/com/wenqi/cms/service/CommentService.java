@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bawei.wenqi.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.page.PageMethod;
 import com.wenqi.cms.dao.CommentDao;
 import com.wenqi.cms.pojo.Comment;
 @Service
@@ -38,7 +39,7 @@ public class CommentService {
 	 * @throws
 	 */
 	public PageInfo<Comment> getPageInfo(Integer articleId,int pageNum){
-		PageHelper.startPage(pageNum, 2);
+		PageMethod.startPage(pageNum, 2);
 		Comment comment = new Comment();
 		comment.setArticleid(articleId);
 		List<Comment> commentList = commentDao.select(comment);
