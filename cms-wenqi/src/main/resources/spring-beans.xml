@@ -4,10 +4,12 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 
 
 
@@ -88,13 +90,19 @@
 
 	</bean>
 	
-	<!-- 导入es配置文件 -->
+	<!-- Spring整合线程池 -->
+	<task:executor id="executor" pool-size="10-1000" 
+					queue-capacity="10" keep-alive="10" rejection-policy="CALLER_RUNS"/>
+	
+	
+	<!--导入kafka配置文件  -->
+	<import resource="spring-kafka-*.xml"/>
+	
+	<!--导入redis配置文件  -->
+	<import resource="spring-redis.xml"/>
+	
+	<!--导入es配置文件  -->
 	<import resource="spring-es.xml"/>
 	
-	<!-- 导入kafka配置文件 -->
-	<!-- <import resource="spring-kafka-*.xml"/> -->
 	
-	<!-- 导入redis配置文件 -->
-	<import resource="spring-redis.xml"/>
-
 </beans>

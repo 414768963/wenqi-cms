@@ -44,8 +44,9 @@
 				<div style="margin-top: 10px;margin-bottom: 10px;font-weight: bold;color: #777;">
 					<span>${user.nickname }</span> 
 					<span><fmt:formatDate value="${article.created}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+					<p>浏览量:${article.hits }</p>
 					<div style="margin-top: 10px;">
-						    <button type="button" class="btn btn-primary" onclick="tousuShow()">投诉</button>
+						    <button type="button" class="btn btn-primary" onclick="collectShow()">收藏</button>
 					</div>
 				</div>
 				<div style="font-size: 24">
@@ -131,6 +132,33 @@
   </div>
 </div>
 
+<div class="modal" tabindex="-1" role="dialog" id="collectModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">收藏</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="collectForm">
+	      <div class="modal-body">
+	      	  <div class="form-group">
+			           文本内容:<input type="text" class="form-control" id="collectText" name="collectText">
+			  </div>
+	       	  <div class="form-group">
+			     URL地址:<input type="text" class="form-control" id="collectUrlip" name="collectUrlip">
+			  </div>
+	      </div>
+      </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="collect()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 	<script type="text/javascript" src="/public/js/jquery.min.1.12.4.js"></script>
 	<script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
@@ -164,6 +192,16 @@
 				}
 			})
 		}
+		function collectShow() {
+			$.post("/user/isLogin",function(res){
+				if(res.result){
+					$('#collectModal').modal('show');
+				}else{
+					alert("您还未登录");
+					location.href="/user/login";
+				}
+			})
+		}
 		function tousu() {
 			var data = $("form").serialize();
 			console.log(data);
@@ -179,6 +217,20 @@
 				if(res.errorCode==1002){
 					alert("URL路径不正确");
 					$('#tousuModal').modal('hide');
+				}
+			})
+		}
+		function collect() {
+			var data = $("#collectForm").serialize();
+			console.log(data);
+			$.post("/collect/add",data,function(res){
+				if(res.errorCode==2020){
+					alert("URL路径不正确");
+					$('#collectModal').modal('hide');
+				}
+				if(res.result){
+					alert("收藏成功!");
+					$('#collectModal').modal('hide');
 				}
 			})
 		}

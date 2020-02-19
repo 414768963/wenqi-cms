@@ -146,4 +146,6 @@ public interface ArticleService {
 	*/
 	
 	int addComplain(Integer id);
+	
+    int kafkaSave(Article article);
 }

@@ -19,6 +19,7 @@ import com.bawei.wenqi.utils.HLUtils;
 import com.github.pagehelper.PageInfo;
 import com.wenqi.cms.common.CmsConstant;
 import com.wenqi.cms.common.JsonResult;
+import com.wenqi.cms.dao.ArticleRepostory;
 import com.wenqi.cms.pojo.Article;
 import com.wenqi.cms.pojo.Category;
 import com.wenqi.cms.pojo.Channel;
@@ -32,18 +33,25 @@ public class ArticleController {
 	private ArticleService articleService;
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
+	@Autowired
+	private ArticleRepostory articleRepostory;
+	
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@RequestMapping("search")
 	public String search(String keyword,Model model,@RequestParam(defaultValue = "1")Integer pageNum,
-			@RequestParam(defaultValue = "5")Integer pageSize) {
+			@RequestParam(defaultValue = "6")Integer pageSize) {
 			/** 频道 */
 			List<Channel> channelList = articleService.getChannelList();
 			model.addAttribute("channelList", channelList);
 			/** 最新文章 **/
 			List<Article> newArticleList = articleService.getNewList(6);
 			model.addAttribute("newArticleList", newArticleList);
+			
+			long beginTime = System.currentTimeMillis();
 			PageInfo<Article> pageInfo = (PageInfo<Article>) HLUtils.findByHighLight(elasticsearchTemplate, Article.class, pageNum, pageSize, new String[] {"title"}, "id", keyword);
+			long endTime = System.currentTimeMillis();
+			System.err.println("es查询共耗费"+(endTime-beginTime)+"毫秒");
 			model.addAttribute("pageInfo", pageInfo);
 			model.addAttribute("keyword", keyword);
 			
@@ -117,9 +125,11 @@ public class ArticleController {
 		if(!isCheck) {
 			return JsonResult.fail(10001, "请选择未审核的文章删除");
 		}
-		//删除
+		//删除mysql数据
 		boolean result = articleService.delByIds(ids);
 		if(result) {
+			//删除ES数据
+			articleRepostory.deleteById(Integer.parseInt(ids));
 			return JsonResult.sucess();
 		}
 		return JsonResult.fail(500, "未知错误");

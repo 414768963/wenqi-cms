@@ -102,11 +102,18 @@ public class ArticleServiceImpl implements ArticleService {
 			article.setHits(0);
 			article.setHot(0);
 			articleDao.insert(article);
+			
 		}else {
 			article.setUpdated(new Date());
 			articleDao.update(article);
 		}
 		return true;
+	}
+	
+	public int kafkaSave(Article article) {
+		int i = articleDao.insert(article);
+		
+		return i;
 	}
 
 	@Override
@@ -164,7 +171,6 @@ public class ArticleServiceImpl implements ArticleService {
 			
 			//存入redis中
 			opsForList.rightPushAll("article_hot", articleList);
-			
 			//查询分页数据
 			PageHelper.startPage(pageNum, pageSize);
 			
@@ -172,7 +178,7 @@ public class ArticleServiceImpl implements ArticleService {
 			
 			//创建pageInfo对象
 			pageInfo = new PageInfo<Article>(list);
-			
+			System.err.println("从redis获取了热点文章");
 		}else {
 			//将数据存入redis中
 			//非第一次时，直接从redis中获取数据，（如果新增了文章，则清空redis，在审核通过处写）
@@ -191,6 +197,8 @@ public class ArticleServiceImpl implements ArticleService {
 			
 			//创建pageInfo对象
 			pageInfo = new PageInfo<Article>(page_list);
+			
+			System.err.println("从redis获取了热点文章");
 		}
 		
 		return pageInfo;
@@ -227,11 +235,13 @@ public class ArticleServiceImpl implements ArticleService {
 			
 			//存入redis中
 			opsForList.rightPushAll("article_new", list);
+			System.err.println("从redis获取了最新文章");
 			
 		}else {
 			//将数据存入redis中
 			//非第一次时，直接从redis中获取数据，（如果新增了文章，则清空redis，在审核通过处写）
 			list = opsForList.range("article_new", 0, -1);
+			System.err.println("从redis获取了最新文章");
 		}
 		
 		return list;

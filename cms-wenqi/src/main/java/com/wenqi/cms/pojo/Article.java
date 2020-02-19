@@ -16,6 +16,7 @@ public class Article implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	private Integer id;
+	
 	@Field(index = true,store = true,analyzer = "ik_smart",searchAnalyzer = "ik_smart",type = FieldType.text)
     private String title;
 
@@ -53,17 +54,36 @@ public class Article implements Serializable{
     
     private Integer tousuCnt;
     
+    private String abs;
     
-    @Override
-	public String toString() {
-		return "Article [id=" + id + ", title=" + title + ", picture=" + picture + ", channelId=" + channelId
-				+ ", categoryId=" + categoryId + ", userId=" + userId + ", hits=" + hits + ", hot=" + hot + ", status="
-				+ status + ", deleted=" + deleted + ", created=" + created + ", updated=" + updated + ", commentcnt="
-				+ commentcnt + ", content=" + content + "]";
+    
+    
+    
+    public String getAbs() {
+		return abs;
 	}
 
+
+
+	public void setAbs(String abs) {
+		this.abs = abs;
+	}
+
+
+
     
-    
+	@Override
+	public String toString() {
+		return "Article [id=" + id + ", title=" + title + ", picture=" + picture + ", channelId=" + channelId
+				+ ", categoryId=" + categoryId + ", channelName=" + channelName + ", categoryName=" + categoryName
+				+ ", userId=" + userId + ", nickname=" + nickname + ", hits=" + hits + ", hot=" + hot + ", status="
+				+ status + ", deleted=" + deleted + ", created=" + created + ", updated=" + updated + ", commentcnt="
+				+ commentcnt + ", content=" + content + ", statusIds=" + statusIds + ", tousuCnt=" + tousuCnt + ", abs="
+				+ abs + "]";
+	}
+
+
+
 	public Integer getTousuCnt() {
 		return tousuCnt;
 	}

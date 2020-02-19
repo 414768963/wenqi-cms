@@ -21,8 +21,10 @@ import com.wenqi.cms.common.CookieUtil;
 import com.wenqi.cms.common.JsonResult;
 import com.wenqi.cms.pojo.Article;
 import com.wenqi.cms.pojo.Channel;
+import com.wenqi.cms.pojo.Collect;
 import com.wenqi.cms.pojo.User;
 import com.wenqi.cms.service.ArticleService;
+import com.wenqi.cms.service.CollectService;
 import com.wenqi.cms.service.UserService;
 
 @Controller
@@ -32,6 +34,17 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private CollectService collectService;
+	
+	@RequestMapping("collect")
+	public String collect(Model model,HttpSession session) {
+		User user = (User) session.getAttribute(CmsConstant.UserSessionKey);
+		Integer userId = user.getId();
+		List<Collect> list = collectService.selectByUserId(userId);
+		model.addAttribute("list", list);
+		return "/user/collect";
+	}
 	
 	/**
 	 * @Title: login   

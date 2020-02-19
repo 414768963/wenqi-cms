@@ -72,16 +72,16 @@
 	</select>
 	
 	<insert id="insert" parameterType="com.wenqi.cms.pojo.Article">
-		insert into cms_article (title, picture, channel_id, 
+		insert into cms_article (id,title, picture, channel_id,
 	      category_id, user_id, hits, 
-	      hot, status, deleted, 
+	      hot, status, deleted,
 	      created, updated, commentCnt, 
-	      content)
-	    values (#{article.title}, #{article.picture}, #{article.channelId}, 
+	      content,abs)
+	    values (#{article.id},#{article.title}, #{article.picture}, #{article.channelId}, 
 	      #{article.categoryId}, #{article.userId}, #{article.hits}, 
 	      #{article.hot}, #{article.status}, #{article.deleted}, 
 	      #{article.created}, #{article.updated}, #{article.commentcnt}, 
-	      #{article.content})
+	      #{article.content},#{article.abs})
 	</insert>
 	
 	<update id="update">
@@ -94,6 +94,7 @@
 	      status = #{article.status},
 	      updated = #{article.updated},
 	      commentCnt = #{article.commentcnt},
+	      hits = #{article.hits},
 	      content = #{article.content}
 	    where id = #{article.id}
 	</update>

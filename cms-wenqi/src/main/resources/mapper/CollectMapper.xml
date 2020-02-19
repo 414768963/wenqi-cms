@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wenqi.cms.dao.CollectDao">
+
+	<insert id="add">
+		INSERT INTO `cms-1709d`.`cms_collect` (`id`, `text`, `url`, `created`, `user_id`) VALUES 
+				(null, #{collect.text},#{collect.url},#{collect.created},#{collect.user_id});
+	</insert>
+	
+	<select id="selectByUserId" resultType="com.wenqi.cms.pojo.Collect">
+		SELECT * FROM CMS_COLLECT C WHERE C.USER_ID = #{userId} 
+	</select>
+	
+	<delete id="del">
+		delete from CMS_COLLECT where CMS_COLLECT.id=#{collectId}
+	
+	</delete>
+	
+</mapper>
